@@ -10,7 +10,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const config = {
   headers: {
     Authorization:
@@ -25,7 +25,7 @@ function EditFieldModal(props) {
 
   const [fieldId, setFieldId] = useState(customField?.id);
   const [open, setOpen] = useState(false);
-  const [bookingLink, setBookingLink] = useState('');
+  const [bookingLink, setBookingLink] = useState("");
   const [updatedContact, setUpdatedContact] = useState(contact);
 
   useEffect(() => {
@@ -46,18 +46,38 @@ function EditFieldModal(props) {
   };
 
   const handleSubmit = () => {
-
     axios
       .put(`${baseUrl}/contacts/${contact?.id}`, { ...updatedContact }, config)
       .then((res) => {
         console.log(res.data, contact);
-        setContact(res.data.contact)
+        setContact(res.data.contact);
         console.log(res.status);
-        handleOpen()
+        handleOpen();
+        toast.success("updated!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
   };
-
 
   const handleOpen = () => setOpen(!open);
   return (
