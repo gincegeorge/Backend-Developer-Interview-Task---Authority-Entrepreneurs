@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-
+import EditFieldModal from "../components/EditFieldModal";
 function Home() {
   const [contact, setContact] = useState(null);
   const [customField, setCustomField] = useState(null);
@@ -12,11 +13,14 @@ function Home() {
         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2NhdGlvbl9pZCI6IkpOVEpTV04ya0tkRVZkMElFbEZhIiwiY29tcGFueV9pZCI6ImJmb1Q3MkNWcm9oMlg4ZWZPUmdRIiwidmVyc2lvbiI6MSwiaWF0IjoxNjYxNDE2NzQzNTcxLCJzdWIiOiJQcVJEWDZqMjdXempXRUNsQm92eCJ9.u6WPtyudfB9R4nLnLbBZ6i9KquDeK6WnIOZxKAeE9Hg",
     },
   };
+
   const baseUrl = "https://rest.gohighlevel.com/v1";
 
   useEffect(() => {
     getContact();
     getCustomField();
+
+    console.log(contact);
   }, []);
 
   const getContact = async () => {
@@ -40,9 +44,6 @@ function Home() {
       .catch((err) => console.log(err));
   };
 
-  console.log(contact);
-  console.log(customField);
-
   return (
     <>
       <div className="max-w-5xl mx-auto pt-20">
@@ -58,7 +59,7 @@ function Home() {
                   Email
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  DFS booking zoom link
+                  Phone
                 </th>
                 <th>Action</th>
               </tr>
@@ -70,16 +71,20 @@ function Home() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    {contact.contactName}
+                    {contact.firstName}
                   </th>
                   <td className="px-6 py-4">{contact.email}</td>
-                  <td className="px-6 py-4">{customField.name}</td>
+                  <td className="px-6 py-4">{contact.phone}</td>
                   <td className="px-6 py-4">
                     <a
                       href="#"
                       className="font-medium text-blue-600  hover:underline"
                     >
-                      Edit
+                      <EditFieldModal
+                        contact={contact}
+                        customField={customField}
+                        setContact={setContact}
+                      />
                     </a>
                   </td>
                 </tr>
@@ -89,18 +94,11 @@ function Home() {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    ----------
+                    loading
                   </th>
-                  <td className="px-6 py-4">------- --</td>
-                  <td className="px-6 py-4">TEST</td>
-                  <td className="px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600  hover:underline"
-                    >
-                      Edit
-                    </a>
-                  </td>
+                  <td className="px-6 py-4">loading</td>
+                  <td className="px-6 py-4">loading</td>
+                  <td className="px-6 py-4">edit</td>
                 </tr>
               )}
             </tbody>
